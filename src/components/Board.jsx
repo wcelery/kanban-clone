@@ -5,7 +5,7 @@ import Deck from "./blocks/Deck";
 
 export default function Board() {
   const decks = [
-    { name: "ON-HOLD", color: "orange.300", id: nanoid() },
+    { name: "ON-HOLD", color: "orange.300", id: nanoid() }, //dunno if its ok to call a function like this
     { name: "IN-PROGRESS", color: "blue.300", id: nanoid() },
     { name: "NEEDS REVIEW", color: "yellow.300", id: nanoid() },
     { name: "APPROVED", color: "green.300", id: nanoid() },
