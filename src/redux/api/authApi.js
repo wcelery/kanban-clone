@@ -1,15 +1,8 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-export const api = createApi({
+export const authApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "https://trello.backend.tests.nekidaem.ru/api/v1/",
-    prepareHeaders: (headers, { getState }) => {
-      const token = getState().auth.token;
-      if (token) {
-        headers.set("Authorization", `JWT ${token}`);
-      }
-      return headers;
-    },
   }),
   endpoints: (builder) => ({
     register: builder.mutation({
@@ -26,11 +19,7 @@ export const api = createApi({
         body: credentials,
       }),
     }),
-    board: builder.mutation({
-      query: () => "cards",
-    }),
   }),
 });
 
-export const { useLoginMutation, useRegisterMutation, useProtectedMutation } =
-  api;
+export const { useLoginMutation, useRegisterMutation } = authApi;

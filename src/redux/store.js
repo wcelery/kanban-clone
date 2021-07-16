@@ -10,21 +10,21 @@ import {
   REGISTER,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import { api } from "./api/authApi";
+import { authApi } from "./api/authApi";
 import authReducer from "./auth/authSlice";
 
 const persistConfig = {
   key: "auth",
   version: 1,
   storage,
-  blacklist: [api.reducerPath],
+  blacklist: [authApi.reducerPath],
 };
 
 const persistedReducer = persistReducer(persistConfig, authReducer);
 
 export const store = configureStore({
   reducer: {
-    [api.reducerPath]: api.reducer,
+    [authApi.reducerPath]: authApi.reducer,
     auth: persistedReducer,
   },
   middleware: (getDefaultMiddleware) =>
@@ -32,7 +32,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(api.middleware),
+    }).concat(authApi.middleware),
 });
 
 export let persistor = persistStore(store);
