@@ -1,11 +1,8 @@
-import Test from "./test";
-
 function App() {
   const [count, setCount] = React.useState(0);
 
   return (
     <div className="App">
-      <Test />
       <header className="App-header">
         <p>Hello Vite + React!</p>
         <p>
