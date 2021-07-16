@@ -6,15 +6,22 @@ export const api = createApi({
     prepareHeaders: (headers, { getState }) => {
       const token = getState().auth.token;
       if (token) {
-        headers.set("authentication", `JWT ${token}`);
+        headers.set("Authentication", `JWT ${token}`);
       }
       return headers;
     },
   }),
   endpoints: (builder) => ({
+    register: builder.mutation({
+      query: (credentials) => ({
+        url: "users/create/",
+        method: "POST",
+        body: credentials,
+      }),
+    }),
     login: builder.mutation({
       query: (credentials) => ({
-        url: "users/login",
+        url: "users/login/",
         method: "POST",
         body: credentials,
       }),
@@ -25,4 +32,5 @@ export const api = createApi({
   }),
 });
 
-export const { useLoginMutation, useProtectedMutation } = api;
+export const { useLoginMutation, useRegisterMutation, useProtectedMutation } =
+  api;
