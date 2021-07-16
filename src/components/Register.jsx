@@ -28,6 +28,22 @@ export default function Register() {
   const handleChange = ({ target: { name, value } }) =>
     setFormState((prev) => ({ ...prev, [name]: value }));
 
+  const handleClick = async () => {
+    try {
+      const user = await registerWith(formState); //trigger rtk query by calling "registerWith"
+      console.log(user);
+      dispatch(setCredentials(user.data));
+      push("/");
+    } catch (err) {
+      toast({
+        status: "error",
+        title: "Error",
+        description: "Oh no, there was an error!",
+        isClosable: true,
+      });
+    }
+  };
+
   return (
     <Center h="500px">
       <VStack spacing="4">
@@ -52,21 +68,7 @@ export default function Register() {
           <PasswordInput onChange={handleChange} name="password" />
         </InputGroup>
         <Button
-          onClick={async () => {
-            try {
-              const user = await registerWith(formState); //trigger rtk query by calling "registerWith"
-              console.log(user);
-              dispatch(setCredentials(user.data));
-              push("/");
-            } catch (err) {
-              toast({
-                status: "error",
-                title: "Error",
-                description: "Oh no, there was an error!",
-                isClosable: true,
-              });
-            }
-          }}
+          onClick={handleClick}
           isFullWidth
           colorScheme="green"
           isLoading={isLoading}

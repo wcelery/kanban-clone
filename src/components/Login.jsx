@@ -28,6 +28,22 @@ export default function Login() {
   const handleChange = ({ target: { name, value } }) =>
     setFormState((prev) => ({ ...prev, [name]: value }));
 
+  const handleClick = async () => {
+    try {
+      const user = await loginWith(formState);
+      dispatch(setCredentials(formState));
+      dispatch(setToken(user.data));
+      push("/");
+    } catch (err) {
+      toast({
+        status: "error",
+        title: "Error",
+        description: "Oh no, there was an error!",
+        isClosable: true,
+      });
+    }
+  };
+
   return (
     <Center h="500px">
       <VStack spacing="4">
@@ -44,26 +60,7 @@ export default function Login() {
         <InputGroup>
           <PasswordInput onChange={handleChange} name="password" />
         </InputGroup>
-        <Button
-          onClick={async () => {
-            try {
-              const user = await loginWith(formState);
-              console.log(user);
-              dispatch(setCredentials(formState));
-              dispatch(setToken(user.data));
-              push("/");
-            } catch (err) {
-              toast({
-                status: "error",
-                title: "Error",
-                description: "Oh no, there was an error!",
-                isClosable: true,
-              });
-            }
-          }}
-          isFullWidth
-          colorScheme="green"
-        >
+        <Button onClick={handleClick} isFullWidth colorScheme="green">
           Login
         </Button>
       </VStack>
