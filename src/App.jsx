@@ -1,19 +1,21 @@
-function App() {
-  const [count, setCount] = React.useState(0);
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Board from "./components/Board";
+import Login from "./components/Login";
+import Register from "./components/Register";
+import { ProtectedRoute } from "./utils/ProtectedRoute";
 
+function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.jsx</code> and save to test HMR updates.
-        </p>
-      </header>
+      <Router>
+        <Switch>
+          <Route exact path="/register" component={Register} />
+          <Route exact path="/login" component={Login} />
+          <ProtectedRoute path="/">
+            <Board />
+          </ProtectedRoute>
+        </Switch>
+      </Router>
     </div>
   );
 }
