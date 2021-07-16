@@ -2,10 +2,8 @@ import {
   Box,
   Button,
   Center,
-  Divider,
   Input,
   InputGroup,
-  InputRightElement,
   useToast,
   VStack,
 } from "@chakra-ui/react";
@@ -20,7 +18,7 @@ export default function Login() {
   const { push } = useHistory();
   const toast = useToast();
 
-  const [login, { data, isLoading }] = useLoginMutation();
+  const [loginWith, { data, isLoading }] = useLoginMutation();
 
   const [formState, setFormState] = React.useState({
     username: "",
@@ -49,11 +47,11 @@ export default function Login() {
         <Button
           onClick={async () => {
             try {
-              const user = await login(formState);
+              const user = await loginWith(formState);
               console.log(user);
               dispatch(setCredentials(formState));
               dispatch(setToken(user.data));
-              push("/login");
+              //push("/");
             } catch (err) {
               toast({
                 status: "error",
