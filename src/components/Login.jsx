@@ -11,12 +11,16 @@ import {
 } from "@chakra-ui/react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { useLoginMutation } from "../redux/api/authApi";
+import { setCredentials, setToken } from "../redux/auth/authSlice";
 import PasswordInput from "./blocks/PasswordInput";
 
 export default function Login() {
   const dispatch = useDispatch();
   const { push } = useHistory();
   const toast = useToast();
+
+  const [login, { data, isLoading }] = useLoginMutation();
 
   const [formState, setFormState] = React.useState({
     username: "",
@@ -35,17 +39,35 @@ export default function Login() {
             onChange={handleChange}
             name="username"
             type="text"
-            placeholder="Email"
+            placeholder="Username"
           />
         </InputGroup>
 
         <InputGroup>
           <PasswordInput onChange={handleChange} name="password" />
         </InputGroup>
-        <Button isFullWidth colorScheme="green">
+        <Button
+          onClick={async () => {
+            try {
+              const user = await login(formState);
+              console.log(user);
+              dispatch(setCredentials(formState));
+              dispatch(setToken(user.data));
+              push("/login");
+            } catch (err) {
+              toast({
+                status: "error",
+                title: "Error",
+                description: "Oh no, there was an error!",
+                isClosable: true,
+              });
+            }
+          }}
+          isFullWidth
+          colorScheme="green"
+        >
           Login
         </Button>
-        <Divider />
       </VStack>
     </Center>
   );
