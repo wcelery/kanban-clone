@@ -56,7 +56,6 @@ export default function Login() {
             placeholder="Username"
           />
         </InputGroup>
-
         <InputGroup>
           <PasswordInput onChange={handleChange} name="password" />
         </InputGroup>
