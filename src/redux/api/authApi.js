@@ -4,7 +4,6 @@ export const authApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "https://trello.backend.tests.nekidaem.ru/api/v1/",
     prepareHeaders: (headers, { getState }) => {
-      // By default, if we have a token in the store, let's use that for authenticated requests
       const token = getState().auth.token;
       if (token) {
         headers.set("Authorization", `JWT ${token}`);
@@ -39,10 +38,10 @@ export const authApi = createApi({
       query: () => "cards/",
     }),
     deleteCard: builder.mutation({
-      query: (credentials) => ({
+      query: (data) => ({
         url: "cards/",
         method: "DELETE",
-        body: credentials,
+        body: data,
       }),
     }),
   }),

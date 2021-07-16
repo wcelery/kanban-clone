@@ -28,6 +28,7 @@ export default function Board() {
           <Deck
             key={deck.id}
             cards={data?.filter((card) => card.row == deck.id)}
+            row={deck.id}
           />
         ))}
       </SimpleGrid>
