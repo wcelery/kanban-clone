@@ -51,7 +51,7 @@ export default function Login() {
               console.log(user);
               dispatch(setCredentials(formState));
               dispatch(setToken(user.data));
-              //push("/");
+              push("/");
             } catch (err) {
               toast({
                 status: "error",

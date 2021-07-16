@@ -6,7 +6,7 @@ export const api = createApi({
     prepareHeaders: (headers, { getState }) => {
       const token = getState().auth.token;
       if (token) {
-        headers.set("Authentication", `JWT ${token}`);
+        headers.set("Authorization", `JWT ${token}`);
       }
       return headers;
     },
