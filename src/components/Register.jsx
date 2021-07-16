@@ -10,7 +10,7 @@ import {
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { useRegisterMutation } from "../redux/api/authApi";
-import { setCredentials } from "../redux/auth/authSlice";
+import { setCredentials } from "../redux/slices/authSlice";
 import PasswordInput from "./blocks/PasswordInput";
 
 export default function Register() {

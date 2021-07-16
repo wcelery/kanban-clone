@@ -10,7 +10,7 @@ import {
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { useLoginMutation } from "../redux/api/authApi";
-import { setCredentials, setToken } from "../redux/auth/authSlice";
+import { setCredentials, setToken } from "../redux/slices/authSlice";
 import PasswordInput from "./blocks/PasswordInput";
 
 export default function Login() {
