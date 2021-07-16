@@ -1,13 +1,7 @@
 import { Box, SimpleGrid } from "@chakra-ui/react";
-import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useGetCardsMutation } from "../redux/api/authApi";
-import {
-  selectAllCards,
-  selectCardsByRowId,
-  setCards,
-} from "../redux/slices/cardsSlice";
-import Card from "./blocks/Card";
+import { setCards } from "../redux/slices/cardsSlice";
 
 import Deck from "./blocks/Deck";
 
