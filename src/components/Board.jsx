@@ -1,7 +1,13 @@
 import { Box, SimpleGrid } from "@chakra-ui/react";
+import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useGetCardsMutation } from "../redux/api/authApi";
-import { setCards } from "../redux/slices/cardsSlice";
+import {
+  selectAllCards,
+  selectCardsByRowId,
+  setCards,
+} from "../redux/slices/cardsSlice";
+import Card from "./blocks/Card";
 
 import Deck from "./blocks/Deck";
 
@@ -14,11 +20,10 @@ export default function Board() {
   ];
 
   const dispatch = useDispatch();
-  const [fetchCards, { data, isError, isLoading }] = useGetCardsMutation();
+  const [fetchCards, { data }] = useGetCardsMutation();
 
   React.useEffect(async () => {
     const cards = await fetchCards();
-    console.log(isError);
     dispatch(setCards(cards));
   }, []);
 
@@ -26,7 +31,10 @@ export default function Board() {
     <Box p={4}>
       <SimpleGrid minChildWidth="120px" spacing="40px">
         {decks.map((deck) => (
-          <Deck key={deck.id} />
+          <Deck
+            key={deck.id}
+            cards={data?.filter((card) => card.row == deck.id)}
+          />
         ))}
       </SimpleGrid>
     </Box>

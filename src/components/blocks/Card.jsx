@@ -8,7 +8,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 
-export default function Card() {
+export default function Card({ id, text }) {
   return (
     <Container
       borderRadius="sm"
@@ -20,16 +20,12 @@ export default function Card() {
     >
       <VStack alignItems="left">
         <HStack>
-          <Text>ID: 1</Text>
+          <Text>ID: {id}</Text>
           <Spacer />
           <CloseButton size="sm" />
         </HStack>
         <Box>
-          <Text>
-            rich syndicate web readinessrich syndicate web readinessrich
-            syndicate web readinessrich syndicate web readinessrich syndicate
-            web readiness
-          </Text>
+          <Text>{text}</Text>
         </Box>
       </VStack>
     </Container>
