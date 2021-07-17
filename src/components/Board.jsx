@@ -22,7 +22,7 @@ export default function Board() {
     dispatch(setCards(initialCards));
   }, []);
 
-  const updatedCards = useSelector(selectAllCards);
+  const updatedCards = useSelector(selectAllCards); //because mutation is triggered by firing a function, selector is used to auto rerender the cards
 
   return (
     <Box p={4}>
@@ -30,7 +30,7 @@ export default function Board() {
         {decks.map((deck) => (
           <Deck
             key={deck.id}
-            cards={updatedCards?.data.filter((card) => card.row == deck.id)}
+            cards={updatedCards?.data?.filter((card) => card.row == deck.id)}
             row={deck.id}
           />
         ))}

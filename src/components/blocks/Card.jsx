@@ -4,11 +4,33 @@ import {
   Container,
   HStack,
   Spacer,
+  Spinner,
   Text,
   VStack,
 } from "@chakra-ui/react";
+import { useDispatch } from "react-redux";
+import {
+  useDeleteCardMutation,
+  useGetCardsMutation,
+} from "../../redux/api/authApi";
+import { setCards } from "../../redux/slices/cardsSlice";
 
 export default function Card({ id, text }) {
+  const [deleteCard, { data, isLoading }] = useDeleteCardMutation();
+  const [fetchCards, _] = useGetCardsMutation();
+
+  const dispatch = useDispatch();
+
+  const handleDeleteCard = async (id) => {
+    try {
+      await deleteCard(id);
+      const updatedCards = await fetchCards();
+      dispatch(setCards(updatedCards));
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <Container
       borderRadius="sm"
@@ -19,14 +41,20 @@ export default function Card({ id, text }) {
       p={4}
     >
       <VStack alignItems="left">
-        <HStack>
-          <Text>ID: {id}</Text>
-          <Spacer />
-          <CloseButton size="sm" />
-        </HStack>
-        <Box>
-          <Text>{text}</Text>
-        </Box>
+        {isLoading ? (
+          <Spinner alignSelf="center" size="xl" />
+        ) : (
+          <>
+            <HStack>
+              <Text>ID: {id}</Text>
+              <Spacer />
+              <CloseButton onClick={() => handleDeleteCard(id)} size="sm" />
+            </HStack>
+            <Box>
+              <Text>{text}</Text>
+            </Box>
+          </>
+        )}
       </VStack>
     </Container>
   );

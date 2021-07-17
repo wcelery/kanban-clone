@@ -38,10 +38,9 @@ export const authApi = createApi({
       query: () => "cards/",
     }),
     deleteCard: builder.mutation({
-      query: (data) => ({
-        url: "cards/",
+      query: (id) => ({
+        url: `cards/${id}`,
         method: "DELETE",
-        body: data,
       }),
     }),
   }),
