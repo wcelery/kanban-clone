@@ -13,7 +13,7 @@ export default function MainHeader() {
   return (
     <Box bg="gray.700" borderRadius="sm" w="100%" p={4} mb={4} color="white">
       <Flex alignItems="center">
-        <Heading size="md">You logged as: {user.username} </Heading>
+        <Heading size="md">You logged as: {user.username}</Heading>
         <Spacer />
         <Button
           onClick={handleLogout}

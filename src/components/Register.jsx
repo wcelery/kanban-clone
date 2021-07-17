@@ -12,6 +12,7 @@ import { useHistory } from "react-router-dom";
 import { useRegisterMutation } from "../redux/api/authApi";
 import { setCredentials } from "../redux/slices/authSlice";
 import PasswordInput from "./blocks/PasswordInput";
+import Tip from "./blocks/Tip";
 
 export default function Register() {
   const [formState, setFormState] = React.useState({
@@ -47,7 +48,6 @@ export default function Register() {
   return (
     <Center h="500px">
       <VStack spacing="4">
-        <Box>Hint: enter anything, or leave it blank and hit login</Box>
         <InputGroup>
           <Input
             onChange={handleChange}
@@ -75,6 +75,7 @@ export default function Register() {
         >
           Register
         </Button>
+        <Tip referTo="Login" />
       </VStack>
     </Center>
   );

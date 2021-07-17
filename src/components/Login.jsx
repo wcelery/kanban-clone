@@ -12,6 +12,7 @@ import { useHistory } from "react-router-dom";
 import { useLoginMutation } from "../redux/api/authApi";
 import { setCredentials, setToken } from "../redux/slices/authSlice";
 import PasswordInput from "./blocks/PasswordInput";
+import Tip from "./blocks/Tip";
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -48,7 +49,6 @@ export default function Login() {
   return (
     <Center h="500px">
       <VStack spacing="4">
-        <Box>Hint: enter anything, or leave it blank and hit login</Box>
         <InputGroup>
           <Input
             onChange={handleChange}
@@ -63,6 +63,7 @@ export default function Login() {
         <Button onClick={handleClick} isFullWidth colorScheme="green">
           Login
         </Button>
+        <Tip referTo="Register" />
       </VStack>
     </Center>
   );
