@@ -1,16 +1,55 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import jwtDecode from "jwt-decode";
+import { setToken } from "../slices/authSlice";
+
+const baseQuery = fetchBaseQuery({
+  baseUrl: "https://trello.backend.tests.nekidaem.ru/api/v1/",
+  prepareHeaders: (headers, { getState }) => {
+    const token = getState().auth.token;
+    if (token) {
+      headers.set("Authorization", `JWT ${token}`);
+    }
+    return headers;
+  },
+});
+
+//reminder: these func args are internal and not declared by me
+const baseQueryWithReauth = async (args, api, extraOptions) => {
+  let result = await baseQuery(args, api, extraOptions);
+
+  if (args.url !== "users/login/" && args !== "users/register/") {
+    const oldToken = api.getState().auth.token;
+    const expireAt = new Date(jwtDecode(oldToken).exp * 1000);
+
+    const MINUTES_TILL_EXPIRATION = (expireAt - Date.now()) / 60000;
+
+    if (MINUTES_TILL_EXPIRATION < 10) {
+      // try to get a new token
+      const refreshResult = await baseQuery(
+        {
+          url: "users/refresh_token/",
+          method: "POST",
+          body: { token: oldToken },
+        },
+        api,
+        extraOptions
+      );
+      if (refreshResult.data) {
+        console.log("data:", refreshResult.data);
+        // store the new token
+        api.dispatch(setToken(refreshResult.data));
+        // retry the initial query
+        result = await baseQuery(args, api, extraOptions);
+      } else {
+        console.log("ERROR");
+      }
+    }
+  }
+  return result;
+};
 
 export const authApi = createApi({
-  baseQuery: fetchBaseQuery({
-    baseUrl: "https://trello.backend.tests.nekidaem.ru/api/v1/",
-    prepareHeaders: (headers, { getState }) => {
-      const token = getState().auth.token;
-      if (token) {
-        headers.set("Authorization", `JWT ${token}`);
-      }
-      return headers;
-    },
-  }),
+  baseQuery: baseQueryWithReauth,
 
   endpoints: (builder) => ({
     register: builder.mutation({
@@ -39,7 +78,7 @@ export const authApi = createApi({
     }),
     deleteCard: builder.mutation({
       query: (id) => ({
-        url: `cards/${id}`,
+        url: `cards/${id}/`,
         method: "DELETE",
       }),
     }),
