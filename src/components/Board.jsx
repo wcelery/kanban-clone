@@ -10,7 +10,7 @@ export default function Board() {
   const decks = [
     { name: "ON-HOLD", color: "orange.300", id: 0 },
     { name: "IN-PROGRESS", color: "blue.300", id: 1 },
-    { name: "NEEDS REVIEW", color: "yellow.300", id: 2 },
+    { name: "NEEDS REVIEW", color: "purple.300", id: 2 },
     { name: "APPROVED", color: "green.300", id: 3 },
   ];
 
@@ -31,7 +31,7 @@ export default function Board() {
           <Deck
             key={deck.id}
             cards={updatedCards?.data?.filter((card) => card.row == deck.id)}
-            row={deck.id}
+            deck={deck}
           />
         ))}
       </SimpleGrid>

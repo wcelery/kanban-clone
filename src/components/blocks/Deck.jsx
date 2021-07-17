@@ -7,20 +7,21 @@ import {
 } from "@chakra-ui/react";
 import { AiOutlinePlus } from "react-icons/ai";
 import { MdClose } from "react-icons/md";
+import { useDispatch } from "react-redux";
 
 import Card from "./Card";
-import { useToggle } from "../../utils/useToggle";
+import Header from "./Header";
 import {
   useCreateCardMutation,
   useGetCardsMutation,
 } from "../../redux/api/authApi";
 import { setCards } from "../../redux/slices/cardsSlice";
-import { useDispatch } from "react-redux";
+import { useToggle } from "../../utils/useToggle";
 
-export default function Deck({ cards, row }) {
+export default function Deck({ deck, cards }) {
   const [isOpen, setIsOpen] = useToggle();
   const [taskObject, setTaskObject] = React.useState({
-    row,
+    row: deck.row,
     text: "",
   });
 
@@ -47,6 +48,7 @@ export default function Deck({ cards, row }) {
 
   return (
     <Container bg="gray.100" color="gray.800" maxW="sm" p={4} centerContent>
+      <Header color={deck.color} title={deck.name} total={cards.length} />
       {cards?.map((card) => (
         <Card key={card.id} id={card.id} text={card.text} />
       ))}

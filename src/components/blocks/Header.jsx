@@ -1,6 +1,6 @@
 import { Box, Heading } from "@chakra-ui/react";
 
-export default function Header({ color = "tomato" }) {
+export default function Header({ color = "tomato", title, total }) {
   return (
     <Box
       bg={color}
@@ -9,8 +9,11 @@ export default function Header({ color = "tomato" }) {
       p={2}
       m={4}
       color="white"
+      w="100%"
     >
-      <Heading fontSize="md">This is the Box</Heading>
+      <Heading fontSize="md">
+        {title} ({total})
+      </Heading>
     </Box>
   );
 }
