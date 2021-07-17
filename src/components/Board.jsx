@@ -1,10 +1,12 @@
-import { Box, SimpleGrid } from "@chakra-ui/react";
+import { Box, Heading, SimpleGrid } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useGetCardsMutation } from "../redux/api/authApi";
 import { selectAllCards, setCards } from "../redux/slices/cardsSlice";
 
 import Deck from "./blocks/Deck";
+import Header from "./blocks/Header";
+import MainHeader from "./blocks/MainHeader";
 
 export default function Board() {
   const decks = [
@@ -26,6 +28,7 @@ export default function Board() {
 
   return (
     <Box p={4}>
+      <MainHeader />
       <SimpleGrid minChildWidth="120px" spacing="40px">
         {decks.map((deck) => (
           <Deck
