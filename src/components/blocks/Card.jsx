@@ -16,8 +16,8 @@ import {
 import { setCards } from "../../redux/slices/cardsSlice";
 
 export default function Card({ id, text }) {
-  const [deleteCard, { data, isLoading }] = useDeleteCardMutation();
-  const [fetchCards, _] = useGetCardsMutation();
+  const [deleteCard, { isLoading }] = useDeleteCardMutation();
+  const [fetchCards] = useGetCardsMutation();
 
   const dispatch = useDispatch();
 

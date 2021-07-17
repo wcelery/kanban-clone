@@ -15,7 +15,7 @@ export default function Board() {
   ];
 
   const dispatch = useDispatch();
-  const [fetchCards, _] = useGetCardsMutation();
+  const [fetchCards] = useGetCardsMutation();
 
   React.useEffect(async () => {
     const initialCards = await fetchCards();

@@ -21,12 +21,12 @@ import { useToggle } from "../../utils/useToggle";
 export default function Deck({ deck, cards }) {
   const [isOpen, setIsOpen] = useToggle();
   const [taskObject, setTaskObject] = React.useState({
-    row: deck.row,
+    row: deck.id,
     text: "",
   });
 
-  const [createCard, { data, error, isLoading }] = useCreateCardMutation();
-  const [fetchCards, _] = useGetCardsMutation();
+  const [createCard, { isLoading }] = useCreateCardMutation();
+  const [fetchCards] = useGetCardsMutation();
 
   const dispatch = useDispatch();
 
@@ -48,7 +48,7 @@ export default function Deck({ deck, cards }) {
 
   return (
     <Container bg="gray.100" color="gray.800" maxW="sm" p={4} centerContent>
-      <Header color={deck.color} title={deck.name} total={cards.length} />
+      <Header color={deck.color} title={deck.name} total={cards?.length} />
       {cards?.map((card) => (
         <Card key={card.id} id={card.id} text={card.text} />
       ))}

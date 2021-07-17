@@ -18,7 +18,7 @@ export default function Login() {
   const { push } = useHistory();
   const toast = useToast();
 
-  const [loginWith, { data, isLoading }] = useLoginMutation();
+  const [loginWith] = useLoginMutation();
 
   const [formState, setFormState] = React.useState({
     username: "",
