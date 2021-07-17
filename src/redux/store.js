@@ -12,7 +12,7 @@ import {
 import storage from "redux-persist/lib/storage";
 import { authApi } from "./api/authApi";
 import authReducer from "./slices/authSlice";
-import cardsReducer from "./slices/cardsSlice";
+import boardReducer from "./slices/boardSlice";
 
 const persistConfig = {
   key: "auth",
@@ -27,7 +27,7 @@ export const store = configureStore({
   reducer: {
     [authApi.reducerPath]: authApi.reducer,
     auth: persistedReducer,
-    cards: cardsReducer,
+    cards: boardReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

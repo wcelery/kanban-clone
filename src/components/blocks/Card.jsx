@@ -13,9 +13,9 @@ import {
   useDeleteCardMutation,
   useGetCardsMutation,
 } from "../../redux/api/authApi";
-import { setCards } from "../../redux/slices/cardsSlice";
+import { setCards } from "../../redux/slices/boardSlice";
 
-export default function Card({ id, text }) {
+export default function Card({ id, text, provided }) {
   const [deleteCard, { isLoading }] = useDeleteCardMutation();
   const [fetchCards] = useGetCardsMutation();
 
@@ -39,6 +39,9 @@ export default function Card({ id, text }) {
       maxW="sm"
       m={4}
       p={4}
+      ref={provided.innerRef}
+      {...provided.draggableProps}
+      {...provided.dragHandleProps}
     >
       <VStack alignItems="left">
         {isLoading ? (

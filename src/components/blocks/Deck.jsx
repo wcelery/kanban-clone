@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   ButtonGroup,
   Container,
@@ -15,8 +16,9 @@ import {
   useCreateCardMutation,
   useGetCardsMutation,
 } from "../../redux/api/authApi";
-import { setCards } from "../../redux/slices/cardsSlice";
+import { setCards } from "../../redux/slices/boardSlice";
 import { useToggle } from "../../utils/useToggle";
+import { Draggable } from "react-beautiful-dnd";
 
 export default function Deck({ deck, cards }) {
   const [isOpen, setIsOpen] = useToggle();
@@ -46,11 +48,23 @@ export default function Deck({ deck, cards }) {
     }
   };
 
+  const sorted = cards?.slice().sort((a, b) => a.seq_num - b.seq_num);
+  console.log(sorted);
+
   return (
     <Container bg="gray.100" color="gray.800" maxW="sm" p={4} centerContent>
       <Header color={deck.color} title={deck.name} total={cards?.length} />
-      {cards?.map((card) => (
-        <Card key={card.id} id={card.id} text={card.text} />
+      {sorted?.map((card, index) => (
+        <Draggable key={card.id} draggableId={card.id.toString()} index={index}>
+          {(provided) => (
+            <Card
+              key={card.id}
+              id={card.id}
+              text={card.text}
+              provided={provided}
+            />
+          )}
+        </Draggable>
       ))}
       {isOpen ? (
         <>

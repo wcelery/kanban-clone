@@ -23,7 +23,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
 
     const MINUTES_TILL_EXPIRATION = (expireAt - Date.now()) / 60000;
 
-    if (MINUTES_TILL_EXPIRATION < 10) {
+    if (MINUTES_TILL_EXPIRATION < 30) {
       // try to get a new token
       const refreshResult = await baseQuery(
         {
@@ -76,6 +76,16 @@ export const authApi = createApi({
     getCards: builder.mutation({
       query: () => "cards/",
     }),
+    moveCard: builder.mutation({
+      query: (data) => {
+        const { id, ...rest } = data;
+        return {
+          url: `cards/${id}/`,
+          method: "PATCH",
+          body: rest,
+        };
+      },
+    }),
     deleteCard: builder.mutation({
       query: (id) => ({
         url: `cards/${id}/`,
@@ -90,5 +100,6 @@ export const {
   useRegisterMutation,
   useCreateCardMutation,
   useGetCardsMutation,
+  useMoveCardMutation,
   useDeleteCardMutation,
 } = authApi;
