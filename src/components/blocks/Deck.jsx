@@ -48,13 +48,10 @@ export default function Deck({ deck, cards }) {
     }
   };
 
-  const sorted = cards?.slice().sort((a, b) => a.seq_num - b.seq_num);
-  console.log(sorted);
-
   return (
     <Container bg="gray.100" color="gray.800" maxW="sm" p={4} centerContent>
       <Header color={deck.color} title={deck.name} total={cards?.length} />
-      {sorted?.map((card, index) => (
+      {cards?.map((card, index) => (
         <Draggable key={card.id} draggableId={card.id.toString()} index={index}>
           {(provided) => (
             <Card

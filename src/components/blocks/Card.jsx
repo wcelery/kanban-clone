@@ -37,7 +37,7 @@ export default function Card({ id, text, provided }) {
       bg="gray.200"
       color="gray.700"
       maxW="sm"
-      m={4}
+      m={2}
       p={4}
       ref={provided.innerRef}
       {...provided.draggableProps}

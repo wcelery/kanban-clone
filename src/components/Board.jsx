@@ -1,4 +1,4 @@
-import { Box, SimpleGrid } from "@chakra-ui/react";
+import { Box, Button, SimpleGrid } from "@chakra-ui/react";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
@@ -27,9 +27,36 @@ export default function Board() {
   }, []);
 
   const onDragEnd = async (result) => {
-    if (!result.destination) return;
-
     const { source, destination } = result;
+
+    //if move cancelled
+
+    if (
+      source.droppableId == destination.droppableId &&
+      source.index == destination.index
+    )
+      return;
+
+    //if move in another vertically and horizontally (another row AND reorder)
+
+    if (
+      source.droppableId !== destination.droppableId &&
+      source.index !== destination.index
+    ) {
+      const card = updatedCards?.cards?.filter(
+        (card) => card.id == result.draggableId
+      );
+      const updatedCard = {
+        ...card[0],
+        row: destination.droppableId,
+        seq_num: destination.index,
+      };
+      moveCards(updatedCard);
+      const movedCards = await fetchCards();
+      dispatch(setCards(movedCards));
+    }
+
+    //if move horizontally
 
     if (source.droppableId !== destination.droppableId) {
       const card = updatedCards?.cards?.filter(
@@ -37,12 +64,18 @@ export default function Board() {
       );
       const updatedCard = { ...card[0], row: destination.droppableId };
       moveCards(updatedCard);
+      const movedCards = await fetchCards();
+      dispatch(setCards(movedCards));
     } else {
+      //if move vertically
+
       const card = updatedCards?.cards?.filter(
         (card) => card.id == result.draggableId
       );
       const movedCard = { ...card[0], seq_num: destination.index };
       await moveCards(movedCard);
+      const movedCards = await fetchCards();
+      dispatch(setCards(movedCards));
     }
   };
 
@@ -53,17 +86,24 @@ export default function Board() {
       <MainHeader />
       <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
         <SimpleGrid minChildWidth="120px" spacing="40px">
+          <Button
+            onClick={async () => {
+              const initialCards = await fetchCards();
+              dispatch(setCards(initialCards));
+            }}
+          >
+            Reload
+          </Button>
           {decks.map((deck) => (
             <Droppable key={deck.id} droppableId={deck.id.toString()}>
               {(provided) => (
-                <div ref={provided.innerRef}>
+                <div ref={provided.innerRef} {...provided.droppableProps}>
                   <Deck
                     key={deck.id}
                     cards={updatedCards?.cards?.filter(
                       (card) => card.row == deck.id
                     )}
                     deck={deck}
-                    {...provided.droppableProps}
                   />
                   {provided.placeholder}
                 </div>
