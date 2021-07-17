@@ -32,7 +32,6 @@ export default function Login() {
     try {
       const user = await loginWith(formState);
       dispatch(setCredentials(formState));
-      console.log(user);
       dispatch(setToken(user.data));
       push("/");
     } catch (err) {

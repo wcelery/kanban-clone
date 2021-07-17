@@ -10,7 +10,12 @@ import { MdClose } from "react-icons/md";
 
 import Card from "./Card";
 import { useToggle } from "../../utils/useToggle";
-import { useCreateCardMutation } from "../../redux/api/authApi";
+import {
+  useCreateCardMutation,
+  useGetCardsMutation,
+} from "../../redux/api/authApi";
+import { setCards } from "../../redux/slices/cardsSlice";
+import { useDispatch } from "react-redux";
 
 export default function Deck({ cards, row }) {
   const [isOpen, setIsOpen] = useToggle();
@@ -20,6 +25,9 @@ export default function Deck({ cards, row }) {
   });
 
   const [createCard, { data, error, isLoading }] = useCreateCardMutation();
+  const [fetchCards, _] = useGetCardsMutation();
+
+  const dispatch = useDispatch();
 
   const handleInput = ({ target }) => {
     const inputValue = target.value;
@@ -29,6 +37,9 @@ export default function Deck({ cards, row }) {
   const handleCreateCard = async () => {
     try {
       await createCard(taskObject);
+      const updatedCards = await fetchCards();
+      dispatch(setCards(updatedCards));
+      setTaskObject({ ...taskObject, text: "" });
     } catch (e) {
       console.log(e);
     }
