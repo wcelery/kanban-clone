@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import jwtDecode from "jwt-decode";
-import { setToken } from "../slices/authSlice";
+import { setIsSessionExpired, setToken } from "../slices/authSlice";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: "https://trello.backend.tests.nekidaem.ru/api/v1/",
@@ -42,6 +42,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
         result = await baseQuery(args, api, extraOptions);
       } else {
         console.log("ERROR");
+        api.dispatch(setIsSessionExpired(true));
       }
     }
   }

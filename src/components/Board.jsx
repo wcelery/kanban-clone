@@ -7,6 +7,7 @@ import { selectAllCards, setCards } from "../redux/slices/boardSlice";
 
 import Deck from "./blocks/Deck";
 import MainHeader from "./blocks/MainHeader";
+import ExpiredSessionModal from "./Modal";
 
 export default function Board() {
   const decks = [
@@ -37,7 +38,7 @@ export default function Board() {
     )
       return;
 
-    //if move in another vertically and horizontally (another row AND reorder)
+    //if move vertically and horizontally (another row AND reorder)
 
     if (
       source.droppableId !== destination.droppableId &&
@@ -84,6 +85,7 @@ export default function Board() {
   return (
     <Box p={4}>
       <MainHeader />
+      <ExpiredSessionModal />
       <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
         <SimpleGrid minChildWidth="120px" spacing="40px">
           <Button
