@@ -6,7 +6,6 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  useDisclosure,
 } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -16,7 +15,6 @@ import {
 } from "../redux/slices/authSlice";
 
 export default function ExpiredSessionModal() {
-  const { onOpen, isOpen } = useDisclosure();
   const dispatch = useDispatch();
   const isSessionExpired = useSelector(selectIsExpired);
   const { push } = useHistory();
@@ -32,7 +30,7 @@ export default function ExpiredSessionModal() {
         closeOnOverlayClick={false}
         isCentered
         onClose={onClose}
-        isOpen={isOpen}
+        isOpen={isSessionExpired}
         motionPreset="slideInBottom"
       >
         <ModalOverlay />

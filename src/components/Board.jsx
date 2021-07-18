@@ -3,7 +3,11 @@ import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useGetCardsMutation, useMoveCardMutation } from "../redux/api/authApi";
-import { selectAllCards, setCards } from "../redux/slices/boardSlice";
+import {
+  selectAllCards,
+  setCards,
+  setMovedCard,
+} from "../redux/slices/boardSlice";
 
 import Deck from "./blocks/Deck";
 import MainHeader from "./blocks/MainHeader";
@@ -32,51 +36,58 @@ export default function Board() {
 
     //if move cancelled
 
-    if (
-      source.droppableId == destination.droppableId &&
-      source.index == destination.index
-    )
-      return;
+    if (!destination) return;
 
     //if move vertically and horizontally (another row AND reorder)
 
-    if (
+    /* if (
       source.droppableId !== destination.droppableId &&
       source.index !== destination.index
     ) {
       const card = updatedCards?.cards?.filter(
         (card) => card.id == result.draggableId
       );
-      const updatedCard = {
+      const movedCard = {
         ...card[0],
         row: destination.droppableId,
         seq_num: destination.index,
       };
-      moveCards(updatedCard);
-      const movedCards = await fetchCards();
-      dispatch(setCards(movedCards));
-    }
+      dispatch(setMovedCard(movedCard));
+      await moveCards(movedCard);
+      /* const movedCards = await fetchCards();
+      dispatch(setCards(movedCards)); 
+    } */
 
     //if move horizontally
 
     if (source.droppableId !== destination.droppableId) {
+      console.log("board: moved diagonally");
       const card = updatedCards?.cards?.filter(
         (card) => card.id == result.draggableId
       );
-      const updatedCard = { ...card[0], row: destination.droppableId };
-      moveCards(updatedCard);
-      const movedCards = await fetchCards();
-      dispatch(setCards(movedCards));
+      const movedCard = {
+        ...card[0],
+        row: destination.droppableId,
+        seq_num: destination.index,
+      };
+      dispatch(setMovedCard(movedCard));
+      await moveCards(movedCard);
+      /* const movedCards = await fetchCards();
+      dispatch(setCards(movedCards)); */
     } else {
       //if move vertically
+      console.log("vertically");
+      console.log(result);
 
       const card = updatedCards?.cards?.filter(
         (card) => card.id == result.draggableId
       );
       const movedCard = { ...card[0], seq_num: destination.index };
+      console.log("moved card:", movedCard);
+      dispatch(setMovedCard(movedCard));
       await moveCards(movedCard);
-      const movedCards = await fetchCards();
-      dispatch(setCards(movedCards));
+      /* const movedCards = await fetchCards();
+      dispatch(setCards(movedCards)); */
     }
   };
 
