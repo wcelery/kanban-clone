@@ -1,4 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { reorder } from "../../utils/reorder";
+import { move } from "../../utils/move";
 
 const slice = createSlice({
   name: "board",
@@ -24,18 +26,20 @@ const slice = createSlice({
         (card) => card.id !== id
       );
     },
-    setMovedCard: (state, { payload: card }) => {
-      const entry = state.cards.find((item) => item.id === card.id);
-      if (entry.row == card.row) {
-        console.log("moved vertically");
-        entry.seq_num = card.seq_num;
-      } else if (entry.seq_num == card.seq_num) {
-        console.log("moved horizontally");
-        entry.row = card.row;
+    setMovedCard: (
+      state,
+      { payload: { oldCard, newCard, startIndex, endIndex } }
+    ) => {
+      const entry = state.decks[oldCard.row];
+      if (entry.id == newCard.row) {
+        reorder(entry.cards, startIndex, endIndex);
       } else {
-        console.log("moved diagonally", card);
-        entry.row = card.row;
-        entry.seq_num = card.seq_num;
+        move(
+          state.decks[oldCard.row].cards,
+          state.decks[newCard.row].cards,
+          startIndex,
+          endIndex
+        );
       }
     },
   },

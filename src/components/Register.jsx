@@ -32,7 +32,6 @@ export default function Register() {
   const handleClick = async () => {
     try {
       const user = await registerWith(formState); //trigger rtk query by calling "registerWith"
-      console.log(user);
       dispatch(setCredentials(user.data));
       push("/");
     } catch (err) {
