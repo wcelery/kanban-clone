@@ -80,7 +80,7 @@ export default function Board() {
     }
   };
 
-  /*   console.log(updatedCards); */
+  console.log(updatedCards);
 
   return (
     <Box p={4}>

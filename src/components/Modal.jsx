@@ -16,7 +16,7 @@ import {
 } from "../redux/slices/authSlice";
 
 export default function ExpiredSessionModal() {
-  const { onOpen } = useDisclosure();
+  const { onOpen, isOpen } = useDisclosure();
   const dispatch = useDispatch();
   const isSessionExpired = useSelector(selectIsExpired);
   const { push } = useHistory();
@@ -28,22 +28,21 @@ export default function ExpiredSessionModal() {
 
   return (
     <>
-      <Button onClick={onOpen}>Open Modal</Button>
       <Modal
         closeOnOverlayClick={false}
         isCentered
         onClose={onClose}
-        isOpen={isSessionExpired}
+        isOpen={isOpen}
         motionPreset="slideInBottom"
       >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Not so fast!</ModalHeader>
           <ModalBody>
-            Looks like your session is expired! click the button below to relog
+            Looks like your session is expired! Click the button below to relog.
           </ModalBody>
           <ModalFooter>
-            <Button color="green.500" mr={3} onClick={onClose}>
+            <Button colorScheme="green" mr={3} onClick={onClose}>
               OK
             </Button>
           </ModalFooter>
