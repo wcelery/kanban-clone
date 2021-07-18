@@ -27,7 +27,7 @@ export const store = configureStore({
   reducer: {
     [authApi.reducerPath]: authApi.reducer,
     auth: persistedReducer,
-    cards: boardReducer,
+    board: boardReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

@@ -3,11 +3,26 @@ import { createSlice } from "@reduxjs/toolkit";
 const slice = createSlice({
   name: "board",
   initialState: {
-    cards: [],
+    decks: {
+      0: { name: "ON-HOLD", color: "orange.300", id: 0, cards: [] },
+      1: { name: "IN-PROGRESS", color: "blue.300", id: 1, cards: [] },
+      2: { name: "NEEDS REVIEW", color: "purple.300", id: 2, cards: [] },
+      3: { name: "APPROVED", color: "green.300", id: 3, cards: [] },
+    },
   },
   reducers: {
     setCards: (state, { payload: cards }) => {
-      state.cards = cards.data;
+      Object.values(state.decks).map((deck, index) => {
+        deck.cards.push(...cards?.data.filter((card) => card.row == index));
+      });
+    },
+    setCreatedCard: (state, { payload: createdCard }) => {
+      state.decks[createdCard.row].cards.push(createdCard);
+    },
+    setDeletedCard: (state, { payload: { id, row } }) => {
+      state.decks[row].cards = state.decks[row].cards.filter(
+        (card) => card.id !== id
+      );
     },
     setMovedCard: (state, { payload: card }) => {
       const entry = state.cards.find((item) => item.id === card.id);
@@ -26,8 +41,9 @@ const slice = createSlice({
   },
 });
 
-export const { setCards, setMovedCard } = slice.actions;
+export const { setCards, setMovedCard, setCreatedCard, setDeletedCard } =
+  slice.actions;
 
 export default slice.reducer;
 
-export const selectAllCards = (state) => state.cards;
+export const selectAllDecks = (state) => Object.values(state.board.decks); //dont do this inside selector

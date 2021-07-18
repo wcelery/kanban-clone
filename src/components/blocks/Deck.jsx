@@ -15,11 +15,11 @@ import {
   useCreateCardMutation,
   useGetCardsMutation,
 } from "../../redux/api/authApi";
-import { setCards } from "../../redux/slices/boardSlice";
+import { setCards, setCreatedCard } from "../../redux/slices/boardSlice";
 import { useToggle } from "../../utils/useToggle";
 import { Draggable } from "react-beautiful-dnd";
 
-export default function Deck({ deck, cards }) {
+export default function Deck({ deck }) {
   const [isOpen, setIsOpen] = useToggle();
   const [taskObject, setTaskObject] = React.useState({
     row: deck.id,
@@ -32,15 +32,13 @@ export default function Deck({ deck, cards }) {
   const dispatch = useDispatch();
 
   const handleInput = ({ target }) => {
-    const inputValue = target.value;
-    setTaskObject({ ...taskObject, text: inputValue });
+    setTaskObject({ ...taskObject, text: target.value });
   };
 
   const handleCreateCard = async () => {
     try {
-      await createCard(taskObject);
-      const updatedCards = await fetchCards();
-      dispatch(setCards(updatedCards));
+      const createdCard = await createCard(taskObject);
+      dispatch(setCreatedCard(createdCard.data));
       setTaskObject({ ...taskObject, text: "" });
     } catch (e) {
       console.log(e);
@@ -49,14 +47,15 @@ export default function Deck({ deck, cards }) {
 
   return (
     <Container bg="gray.100" color="gray.800" maxW="sm" p={4} centerContent>
-      <Header color={deck.color} title={deck.name} total={cards?.length} />
-      {cards?.map((card, index) => (
+      <Header color={deck.color} title={deck.name} total={deck.cards?.length} />
+      {deck.cards?.map((card, index) => (
         <Draggable key={card.id} draggableId={card.id.toString()} index={index}>
           {(provided) => (
             <Card
               key={card.id}
               id={card.id}
               text={card.text}
+              row={deck.id} //god forgive me, I didnt wanted dis
               provided={provided}
             />
           )}

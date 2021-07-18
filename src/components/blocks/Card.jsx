@@ -13,9 +13,9 @@ import {
   useDeleteCardMutation,
   useGetCardsMutation,
 } from "../../redux/api/authApi";
-import { setCards } from "../../redux/slices/boardSlice";
+import { setCards, setDeletedCard } from "../../redux/slices/boardSlice";
 
-export default function Card({ id, text, provided }) {
+export default function Card({ id, text, row, provided }) {
   const [deleteCard, { isLoading }] = useDeleteCardMutation();
   const [fetchCards] = useGetCardsMutation();
 
@@ -24,8 +24,7 @@ export default function Card({ id, text, provided }) {
   const handleDeleteCard = async (id) => {
     try {
       await deleteCard(id);
-      const updatedCards = await fetchCards();
-      dispatch(setCards(updatedCards));
+      dispatch(setDeletedCard({ id, row }));
     } catch (e) {
       console.log(e);
     }

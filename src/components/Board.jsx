@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useGetCardsMutation, useMoveCardMutation } from "../redux/api/authApi";
 import {
-  selectAllCards,
+  selectAllDecks,
   setCards,
   setMovedCard,
 } from "../redux/slices/boardSlice";
@@ -14,24 +14,24 @@ import MainHeader from "./blocks/MainHeader";
 import ExpiredSessionModal from "./Modal";
 
 export default function Board() {
-  const decks = [
+  /* const decks = [
     { name: "ON-HOLD", color: "orange.300", id: 0 },
     { name: "IN-PROGRESS", color: "blue.300", id: 1 },
     { name: "NEEDS REVIEW", color: "purple.300", id: 2 },
     { name: "APPROVED", color: "green.300", id: 3 },
-  ];
+  ]; */
 
   const dispatch = useDispatch();
   const [fetchCards] = useGetCardsMutation();
   const [moveCards] = useMoveCardMutation();
-  const updatedCards = useSelector(selectAllCards); //because mutation is triggered by firing a function, selector is used to auto rerender the cards
+  const decks = useSelector(selectAllDecks); //because mutation is triggered by firing a function, selector is used to auto rerender the cards
 
   React.useEffect(async () => {
     const initialCards = await fetchCards();
     dispatch(setCards(initialCards));
   }, []);
 
-  const onDragEnd = async (result) => {
+  /* const onDragEnd = async (result) => {
     const { source, destination } = result;
 
     //if move cancelled
@@ -56,7 +56,7 @@ export default function Board() {
       await moveCards(movedCard);
       /* const movedCards = await fetchCards();
       dispatch(setCards(movedCards)); 
-    } */
+    } 
 
     //if move horizontally
 
@@ -73,7 +73,7 @@ export default function Board() {
       dispatch(setMovedCard(movedCard));
       await moveCards(movedCard);
       /* const movedCards = await fetchCards();
-      dispatch(setCards(movedCards)); */
+      dispatch(setCards(movedCards)); 
     } else {
       //if move vertically
       console.log("vertically");
@@ -87,17 +87,16 @@ export default function Board() {
       dispatch(setMovedCard(movedCard));
       await moveCards(movedCard);
       /* const movedCards = await fetchCards();
-      dispatch(setCards(movedCards)); */
+      dispatch(setCards(movedCards)); 
     }
-  };
-
-  console.log(updatedCards);
+  }; */
+  console.log(decks);
 
   return (
     <Box p={4}>
       <MainHeader />
       <ExpiredSessionModal />
-      <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
+      <DragDropContext onDragEnd={(result) => console.log(result)}>
         <SimpleGrid minChildWidth="120px" spacing="40px">
           <Button
             onClick={async () => {
@@ -107,17 +106,11 @@ export default function Board() {
           >
             Reload
           </Button>
-          {decks.map((deck) => (
-            <Droppable key={deck.id} droppableId={deck.id.toString()}>
+          {decks?.map((deck, index) => (
+            <Droppable key={index} droppableId={index.toString()}>
               {(provided) => (
                 <div ref={provided.innerRef} {...provided.droppableProps}>
-                  <Deck
-                    key={deck.id}
-                    cards={updatedCards?.cards?.filter(
-                      (card) => card.row == deck.id
-                    )}
-                    deck={deck}
-                  />
+                  <Deck key={deck.id} deck={deck} />
                   {provided.placeholder}
                 </div>
               )}
