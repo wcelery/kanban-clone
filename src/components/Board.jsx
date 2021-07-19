@@ -31,9 +31,17 @@ export default function Board() {
 
     if (!destination) return;
 
-    //if move diagonally
+    //if move end up in the same place
+
+    if (
+      source.index == destination.index &&
+      source.droppableId == destination.droppableId
+    ) {
+      return;
+    }
 
     if (source.droppableId !== destination.droppableId) {
+      //if move diagonally
       const card = decks[source.droppableId].cards?.filter(
         (card) => card.id == result.draggableId
       );

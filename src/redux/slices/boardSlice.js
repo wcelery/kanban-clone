@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { reorder } from "../../utils/reorder";
-import { move } from "../../utils/move";
 
 const slice = createSlice({
   name: "board",
@@ -38,12 +37,10 @@ const slice = createSlice({
       if (entry.id == newCard.row) {
         reorder(entry.cards, startIndex, endIndex);
       } else {
-        move(
-          state.decks[oldCard.row].cards,
-          state.decks[newCard.row].cards,
-          startIndex,
-          endIndex
+        state.decks[oldCard.row].cards = state.decks[oldCard.row].cards.filter(
+          (card) => card.id !== oldCard.id
         );
+        state.decks[newCard.row].cards.splice(endIndex.index, 0, newCard);
       }
     },
   },
