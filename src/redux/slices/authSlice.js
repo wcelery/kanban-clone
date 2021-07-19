@@ -10,7 +10,7 @@ const slice = createSlice({
     setToken: (state, { payload: { token } }) => {
       state.token = token;
     },
-    setIsSessionExpired: (state, { payload: { isExpired } }) => {
+    setIsSessionExpired: (state, { payload: isExpired }) => {
       state.isSessionExpired = isExpired;
     },
   },

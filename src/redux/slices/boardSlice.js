@@ -14,9 +14,13 @@ const slice = createSlice({
   },
   reducers: {
     setCards: (state, { payload: cards }) => {
-      Object.values(state.decks).map((deck, index) => {
-        deck.cards.push(...cards?.data.filter((card) => card.row == index));
-      });
+      try {
+        Object.values(state.decks).map((deck, index) => {
+          deck.cards.push(...cards?.data.filter((card) => card.row == index));
+        });
+      } catch (e) {
+        return;
+      }
     },
     setCreatedCard: (state, { payload: createdCard }) => {
       state.decks[createdCard.row].cards.push(createdCard);

@@ -72,27 +72,29 @@ export default function Board() {
     }
   };
 
+  const getListStyle = (isDraggingOver) => ({
+    background: isDraggingOver ? "lightblue" : "",
+    padding: 8,
+    width: 250,
+  });
+
   return (
     <Box p={4}>
       <MainHeader />
       <ExpiredSessionModal />
       <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
-        <SimpleGrid minChildWidth="120px" spacing="40px">
-          <Button
-            onClick={async () => {
-              const initialCards = await fetchCards();
-              dispatch(setCards(initialCards));
-            }}
-          >
-            Reload
-          </Button>
+        <SimpleGrid minChildWidth="250px" spacing="40px">
           {decks?.map((deck, index) => (
             <Droppable key={index} droppableId={index.toString()}>
-              {(provided) => (
-                <div ref={provided.innerRef} {...provided.droppableProps}>
+              {(provided, snapshot) => (
+                <Box
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                  style={getListStyle(snapshot.isDraggingOver)}
+                >
                   <Deck key={deck.id} deck={deck} />
                   {provided.placeholder}
-                </div>
+                </Box>
               )}
             </Droppable>
           ))}
