@@ -9,7 +9,7 @@ import {
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { useRegisterMutation } from "../redux/api/authApi";
-import { setCredentials } from "../redux/slices/authSlice";
+import { setCredentials, setToken } from "../redux/slices/authSlice";
 import PasswordInput from "./blocks/PasswordInput";
 import Tip from "./blocks/Tip";
 
@@ -33,9 +33,11 @@ export default function Register() {
       await registerWith(formState) //trigger rtk query by calling "registerWith"
         .unwrap()
         .then((user) => {
-          dispatch(setCredentials(user.data));
-          push("/");
+          console.log(user);
+          dispatch(setCredentials(user));
+          dispatch(setToken(user.token));
         })
+        .then(() => push("/"))
         .catch((error) => {
           console.log(error);
           toast({

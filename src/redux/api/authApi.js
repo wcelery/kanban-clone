@@ -17,7 +17,7 @@ const baseQuery = fetchBaseQuery({
 const baseQueryWithReauth = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
 
-  if (args.url !== "users/login/" && args !== "users/register/") {
+  if (args.url !== "users/login/" && args.url !== "users/create/") {
     const oldToken = api.getState().auth.token;
     const expireAt = new Date(jwtDecode(oldToken).exp * 1000);
 

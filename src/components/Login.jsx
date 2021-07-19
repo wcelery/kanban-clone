@@ -34,7 +34,7 @@ export default function Login() {
         .unwrap()
         .then((token) => {
           dispatch(setCredentials(formState));
-          dispatch(setToken(token));
+          dispatch(setToken(token.token));
           push("/");
         })
         .catch((error) => {
