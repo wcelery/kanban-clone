@@ -19,29 +19,26 @@ export default function Register() {
     username: "",
     password: "",
   });
-  const [registerErr, setRegisterErr] = React.useState({});
 
   const dispatch = useDispatch();
   const { push } = useHistory();
   const toast = useToast();
 
-  const [registerWith, { isLoading, error }] = useRegisterMutation();
+  const [registerWith, { isLoading }] = useRegisterMutation();
 
   const handleChange = ({ target: { name, value } }) =>
     setFormState((prev) => ({ ...prev, [name]: value }));
 
   const handleClick = async () => {
     try {
-      const user = await registerWith(formState)
-        .unwrap() //trigger rtk query by calling "registerWith"
-        .catch((e) => setRegisterErr(error)); //TODO - error is undefined, why?????????????????????????????
+      const user = await registerWith(formState); //trigger rtk query by calling "registerWith"
       dispatch(setCredentials(user.data));
       push("/");
     } catch (err) {
       toast({
         status: "error",
-        title: `Error ${registerErr.status}`,
-        description: JSON.stringify(registerErr.data),
+        title: "Error",
+        description: "Oh no, there was an error!",
         isClosable: true,
       });
     }
