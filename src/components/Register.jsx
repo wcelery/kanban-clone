@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   Center,
   Input,
@@ -24,23 +23,30 @@ export default function Register() {
   const { push } = useHistory();
   const toast = useToast();
 
-  const [registerWith, { isLoading }] = useRegisterMutation();
+  const [registerWith, { isLoading, isError }] = useRegisterMutation();
 
   const handleChange = ({ target: { name, value } }) =>
     setFormState((prev) => ({ ...prev, [name]: value }));
 
   const handleClick = async () => {
     try {
-      const user = await registerWith(formState); //trigger rtk query by calling "registerWith"
-      dispatch(setCredentials(user.data));
-      push("/");
+      await registerWith(formState) //trigger rtk query by calling "registerWith"
+        .unwrap()
+        .then((user) => {
+          dispatch(setCredentials(user.data));
+          push("/");
+        })
+        .catch((error) => {
+          console.log(error);
+          toast({
+            status: "error",
+            title: `Error ${error.status}`,
+            description: JSON.stringify(error.data),
+            isClosable: true,
+          });
+        });
     } catch (err) {
-      toast({
-        status: "error",
-        title: "Error",
-        description: "Oh no, there was an error!",
-        isClosable: true,
-      });
+      console.log(err);
     }
   };
 

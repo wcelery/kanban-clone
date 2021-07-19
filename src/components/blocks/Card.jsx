@@ -41,6 +41,7 @@ export default function Card({ id, text, row, provided }) {
       ref={provided.innerRef}
       {...provided.draggableProps}
       {...provided.dragHandleProps}
+      zIndex={1}
     >
       <VStack alignItems="left">
         {isLoading ? (

@@ -30,18 +30,24 @@ export default function Login() {
 
   const handleClick = async () => {
     try {
-      const user = await loginWith(formState);
-      dispatch(setCredentials(formState));
-      dispatch(setToken(user.data));
-      push("/");
+      await loginWith(formState)
+        .unwrap()
+        .then((token) => {
+          dispatch(setCredentials(formState));
+          dispatch(setToken(token));
+          push("/");
+        })
+        .catch((error) => {
+          console.log(error);
+          toast({
+            status: "error",
+            title: `Error ${error.status}`,
+            description: JSON.stringify(error.data),
+            isClosable: true,
+          });
+        });
     } catch (err) {
       console.log(err);
-      toast({
-        status: "error",
-        title: "Error",
-        description: "Oh no, there was an error!",
-        isClosable: true,
-      });
     }
   };
 
