@@ -18,28 +18,32 @@ export default function Login() {
   const { push } = useHistory();
   const toast = useToast();
 
-  const [loginWith] = useLoginMutation();
+  const [loginWith, { error }] = useLoginMutation();
 
   const [formState, setFormState] = React.useState({
     username: "",
     password: "",
   });
 
+  const [loginErr, setLoginErr] = React.useState({});
+
   const handleChange = ({ target: { name, value } }) =>
     setFormState((prev) => ({ ...prev, [name]: value }));
 
   const handleClick = async () => {
     try {
-      const user = await loginWith(formState);
+      const user = await loginWith(formState)
+        .unwrap()
+        .catch((e) => setLoginErr(e));
       dispatch(setCredentials(formState));
       dispatch(setToken(user.data));
       push("/");
     } catch (err) {
-      console.log(err);
+      console.log(error);
       toast({
         status: "error",
-        title: "Error",
-        description: "Oh no, there was an error!",
+        title: `Error ${loginErr.status}`,
+        description: JSON.stringify(loginErr.data),
         isClosable: true,
       });
     }

@@ -83,7 +83,7 @@ export default function Board() {
   const getListStyle = (isDraggingOver) => ({
     background: isDraggingOver ? "lightblue" : "",
     padding: 8,
-    width: 250,
+    width: "100%",
   });
 
   return (
