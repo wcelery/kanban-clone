@@ -3,6 +3,7 @@ import { useAuth } from "./useAuth";
 
 export function ProtectedRoute({ children, ...rest }) {
   const { user } = useAuth();
+  console.log(user);
 
   return (
     <Route
