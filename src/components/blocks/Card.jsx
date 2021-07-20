@@ -9,15 +9,11 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useDispatch } from "react-redux";
-import {
-  useDeleteCardMutation,
-  useGetCardsMutation,
-} from "../../redux/api/authApi";
-import { setCards, setDeletedCard } from "../../redux/slices/boardSlice";
+import { useDeleteCardMutation } from "../../redux/api/authApi";
+import { setDeletedCard } from "../../redux/slices/boardSlice";
 
 export default function Card({ id, text, row, provided }) {
   const [deleteCard, { isLoading }] = useDeleteCardMutation();
-  const [fetchCards] = useGetCardsMutation();
 
   const dispatch = useDispatch();
 

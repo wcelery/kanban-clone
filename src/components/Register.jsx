@@ -23,7 +23,7 @@ export default function Register() {
   const { push } = useHistory();
   const toast = useToast();
 
-  const [registerWith, { isLoading, isError }] = useRegisterMutation();
+  const [registerWith, { isLoading }] = useRegisterMutation();
 
   const handleChange = ({ target: { name, value } }) =>
     setFormState((prev) => ({ ...prev, [name]: value }));
@@ -33,13 +33,11 @@ export default function Register() {
       await registerWith(formState) //trigger rtk query by calling "registerWith"
         .unwrap()
         .then((user) => {
-          console.log(user);
           dispatch(setCredentials(user));
           dispatch(setToken(user.token));
         })
         .then(() => push("/"))
         .catch((error) => {
-          console.log(error);
           toast({
             status: "error",
             title: `Error ${error.status}`,

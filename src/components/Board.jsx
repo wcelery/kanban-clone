@@ -1,4 +1,4 @@
-import { Box, Button, SimpleGrid } from "@chakra-ui/react";
+import { Box, SimpleGrid } from "@chakra-ui/react";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
@@ -15,8 +15,10 @@ import ExpiredSessionModal from "./Modal";
 
 export default function Board() {
   const dispatch = useDispatch();
+
   const [fetchCards] = useGetCardsMutation();
   const [moveCards] = useMoveCardMutation();
+
   const decks = useSelector(selectAllDecks); //because mutation is triggered by firing a function, selector is used to auto rerender the cards
 
   React.useEffect(async () => {

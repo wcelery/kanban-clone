@@ -38,7 +38,6 @@ export default function Login() {
           push("/");
         })
         .catch((error) => {
-          console.log(error);
           toast({
             status: "error",
             title: `Error ${error.status}`,

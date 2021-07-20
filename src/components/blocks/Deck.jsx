@@ -11,11 +11,8 @@ import { useDispatch } from "react-redux";
 
 import Card from "./Card";
 import Header from "./Header";
-import {
-  useCreateCardMutation,
-  useGetCardsMutation,
-} from "../../redux/api/authApi";
-import { setCards, setCreatedCard } from "../../redux/slices/boardSlice";
+import { useCreateCardMutation } from "../../redux/api/authApi";
+import { setCreatedCard } from "../../redux/slices/boardSlice";
 import { useToggle } from "../../utils/useToggle";
 import { Draggable } from "react-beautiful-dnd";
 
@@ -27,7 +24,6 @@ export default function Deck({ deck }) {
   });
 
   const [createCard, { isLoading }] = useCreateCardMutation();
-  const [fetchCards] = useGetCardsMutation();
 
   const dispatch = useDispatch();
 

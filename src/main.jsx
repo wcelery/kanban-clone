@@ -1,11 +1,12 @@
 import ReactDOM from "react-dom";
-import "./index.css";
-import App from "./App";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { ChakraProvider } from "@chakra-ui/react";
 import { BrowserRouter } from "react-router-dom";
+
 import { persistor, store } from "./redux/store";
+import App from "./App";
+import "./index.css";
 
 ReactDOM.render(
   //eslint-disable-next-line
