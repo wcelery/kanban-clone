@@ -21,4 +21,5 @@ export const { setCredentials, setToken, setIsSessionExpired } = slice.actions;
 export default slice.reducer;
 
 export const selectToken = (state) => state.auth.token;
+export const selectUser = (state) => state.auth.user;
 export const selectIsExpired = (state) => state.auth.isSessionExpired;
