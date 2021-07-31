@@ -36,6 +36,7 @@ export default function Deck({ deck }) {
       const createdCard = await createCard(taskObject);
       dispatch(setCreatedCard(createdCard.data));
       setTaskObject({ ...taskObject, text: "" });
+      setIsOpen(false);
     } catch (e) {
       console.log(e);
     }
