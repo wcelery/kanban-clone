@@ -43,11 +43,19 @@ const slice = createSlice({
         state.decks[newCard.row].cards.splice(endIndex.index, 0, newCard);
       }
     },
+    resetCardState: (state) => {
+      Object.values(state.decks).map((deck) => (deck.cards = []));
+    },
   },
 });
 
-export const { setCards, setMovedCard, setCreatedCard, setDeletedCard } =
-  slice.actions;
+export const {
+  setCards,
+  setMovedCard,
+  setCreatedCard,
+  setDeletedCard,
+  resetCardState,
+} = slice.actions;
 
 export default slice.reducer;
 

@@ -1,13 +1,17 @@
 import { Box, Button, Flex, Heading, Spacer } from "@chakra-ui/react";
+import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { resetCardState } from "../../redux/slices/boardSlice";
 import { useAuth } from "../../utils/useAuth";
 
 export default function MainHeader() {
-  const { user } = useAuth();
   const { push } = useHistory();
+  const dispatch = useDispatch();
+  const { user } = useAuth();
 
   const handleLogout = () => {
     window.localStorage.removeItem("persist:auth");
+    dispatch(resetCardState());
     push("/login");
   };
   return (
